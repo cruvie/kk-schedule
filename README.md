@@ -44,7 +44,7 @@ graph TB
 
 ## Docker
 
-[docker-compose](https://github.com/cruvie/kk-schedule/deploy-docker)
+[docker-compose](https://github.com/cruvie/kk-scheduler/tree/main/deploy-docker)
 
 visit http://localhost:8668
 
@@ -57,9 +57,9 @@ go get github.com/cruvie/kk-schedule@latest
 ```
 
 - Run a grpc server that implemented `kk_schedule.UnimplementedKKScheduleTriggerServer`
-  see [client server](https://github.com/cruvie/kk-schedule/internal/schedule_test/client_server_test.go)
+  see [client server](https://github.com/cruvie/kk-scheduler/tree/main/kk-schedule/internal/schedule_test/client_server_test.go)
 - Put a service and job into kk-schedule and enable job
-  see [client server](https://github.com/cruvie/kk-schedule/internal/schedule_test/readme_test.go)
+  see [client server](https://github.com/cruvie/kk-scheduler/tree/main/kk-schedule/internal/schedule_test/readme_test.go)
 
 # Contribute
 
@@ -70,16 +70,16 @@ any test case PR is welcome
 ## support move storge engine
 
 kk-schedule use Etcd as default storage engine, but any storage engine
-implement [StoreDriver](https://github.com/cruvie/kk-schedule/kk-schedule-server/internal/schedule/store.go) can be used
+implement [StoreDriver](https://github.com/cruvie/kk-scheduler/tree/main/kk-schedule/kk-schedule-server/internal/schedule/store.go) can be used
 
 Step1 create a `store_xxxx.go`
-like [StoreDriver](https://github.com/cruvie/kk-schedule/kk-schedule-server/internal/schedule/store_etcd.go)
+like [StoreDriver](https://github.com/cruvie/kk-scheduler/tree/main/kk-schedule/kk-schedule-server/internal/schedule/store_etcd.go)
 
 Step2 test it
 
 Step3 add config filed
-in [config.go](https://github.com/cruvie/kk-schedule/kk-schedule-server/internal/g_config/config.go)
-and [config.yml](https://github.com/cruvie/kk-schedule/kk-schedule-server/config.yml)
+in [config.go](https://github.com/cruvie/kk-scheduler/tree/main/kk-schedule/kk-schedule-server/internal/g_config/config.go)
+and [config.yml](https://github.com/cruvie/kk-scheduler/tree/main/kk-schedule/kk-schedule-server/config.yml)
 
 ## improve readme doc and code comment
 
