@@ -1,0 +1,9 @@
+.idea
+.fleet
+.vscode
+node_modules
+package-lock.json
+**/.DS_Store
+**/dist
+kk-schedule.iml
+vendor

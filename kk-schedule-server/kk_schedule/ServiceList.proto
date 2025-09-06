@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package kk_schedule;
+
+option go_package = "/kk_schedule";
+
+import "kk_schedule/Base.proto";
+
+message ServiceList {
+  message Input {
+  }
+
+  message Output {
+    repeated PBRegisterService ServiceList = 1;
+  }
+}
