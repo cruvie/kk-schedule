@@ -2,6 +2,12 @@
 
 A job scheduling system based on cron and grpc
 
+# Screenshot
+
+[service-list](https://github.com/cruvie/kk-scheduler/blob/main/kk-schedule-server/readme/service-list.png)
+
+[job-list](https://github.com/cruvie/kk-scheduler/blob/main/kk-schedule-server/readme/job-list.png)
+
 # System Design
 
 ```mermaid
@@ -70,7 +76,8 @@ any test case PR is welcome
 ## support move storge engine
 
 kk-schedule use Etcd as default storage engine, but any storage engine
-implement [StoreDriver](https://github.com/cruvie/kk-scheduler/blob/main/kk-schedule-server/internal/schedule/store.go) can be used
+implement [StoreDriver](https://github.com/cruvie/kk-scheduler/blob/main/kk-schedule-server/internal/schedule/store.go)
+can be used
 
 Step1 create a `store_xxxx.go`
 like [StoreDriver](https://github.com/cruvie/kk-scheduler/blob/main/kk-schedule-server/internal/schedule/store_etcd.go)

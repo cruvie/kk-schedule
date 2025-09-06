@@ -1,7 +1,7 @@
 name: kk-schedule
 services:
   kk-schedule:
-    image: kk-schedule:latest
+    image: cruvie/kk-schedule:latest
     container_name: kk-schedule
     restart: unless-stopped
     ports:
