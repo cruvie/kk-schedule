@@ -4,9 +4,9 @@ A job scheduling system based on cron and grpc
 
 # Screenshot
 
-[service-list](https://github.com/cruvie/kk-scheduler/blob/main/kk-schedule-server/readme/service-list.png)
+![service-list](https://github.com/cruvie/kk-scheduler/blob/main/readme/service-list.png?raw=true)
 
-[job-list](https://github.com/cruvie/kk-scheduler/blob/main/kk-schedule-server/readme/job-list.png)
+![job-list](https://github.com/cruvie/kk-scheduler/blob/main/readme/job-list.png?raw=true)
 
 # System Design
 
