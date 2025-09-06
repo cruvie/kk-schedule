@@ -1,0 +1,14 @@
+name: kk-schedule
+services:
+  kk-schedule:
+    image: kk-schedule:latest
+    container_name: kk-schedule
+    restart: unless-stopped
+    ports:
+      - "8666:8666"
+      - "8667:8667"
+      - "8668:8668"
+    volumes:
+      - ./config.yml:/kk-schedule/config.yml
+
+

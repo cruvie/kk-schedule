@@ -1,0 +1,11 @@
+
+GrpcPort: 8666
+HttpPort: 8667
+WebPort: 8668
+DebugMode: false
+StoreEtcd:
+  UserName: root
+  Password: root
+  Endpoints:
+    - http://host.docker.internal:2379
+#    - http://127.0.0.1:2379
