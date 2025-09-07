@@ -5,12 +5,13 @@ import (
 
 	"gitee.com/cruvie/kk_go_kit/kk_grpc/grpc_api_gen"
 	"gitee.com/cruvie/kk_go_kit/kk_system"
-	"github.com/cruvie/kk-schedule/kk_schedule"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/kk_schedule"
 )
 
 func TestName(t *testing.T) {
 	kk_system.TerminatePort(3000)
 }
+
 func TestGeneratePermissionApi(t *testing.T) {
 	apiGroupModel := grpc_api_gen.ApiGroupModel{
 		AdditionImports: `
@@ -40,8 +41,11 @@ func TestGeneratePermissionApi(t *testing.T) {
 	//grpc_api_gen.GenerateHandler(apiGroupModel, grpc_api_gen.ApiModel{
 	//	ApiPtr: &kk_schedule.JobPut{},
 	//})
+	//grpc_api_gen.GenerateHandler(apiGroupModel, grpc_api_gen.ApiModel{
+	//	ApiPtr: &kk_schedule.JobDelete{},
+	//})
 	grpc_api_gen.GenerateHandler(apiGroupModel, grpc_api_gen.ApiModel{
-		ApiPtr: &kk_schedule.JobDelete{},
+		ApiPtr: &kk_schedule.JobTrigger{},
 	})
 	//grpc_api_gen.GenerateHandler(apiGroupModel, grpc_api_gen.ApiModel{
 	//	ApiPtr: &kk_schedule.ServiceList{},
@@ -62,7 +66,7 @@ func TestGenImpl(t *testing.T) {
 		grpc_api_gen.GenerateImplInput{
 			ServerName:      "KKSchedule",
 			Methods:         kk_schedule.KKSchedule_ServiceDesc.Methods,
-			ApiDefPkgPath:   "github.com/cruvie/kk-schedule/internal/api_def",
-			HandlersPkgPath: "github.com/cruvie/kk-schedule/internal/api_handlers",
+			ApiDefPkgPath:   "github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_def",
+			HandlersPkgPath: "github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers",
 		})
 }

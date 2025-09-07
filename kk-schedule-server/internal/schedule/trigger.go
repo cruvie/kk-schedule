@@ -4,7 +4,9 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/cruvie/kk-schedule/kk_schedule"
+	"gitee.com/cruvie/kk_go_kit/kk_grpc"
+	"gitee.com/cruvie/kk_go_kit/kk_stage"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/kk_schedule"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -35,7 +37,10 @@ func triggerFunc(service *kk_schedule.PBRegisterService, funcName string) func()
 			slog.Error(err.Error())
 			return
 		}
-		_, err = client.Trigger(context.Background(), &kk_schedule.Trigger_Input{
+		stage := kk_stage.NewStage(context.Background(), "kk-schedule")
+		ctx, cancelFunc := kk_grpc.NewCallGrpcCtx(stage)
+		defer cancelFunc()
+		_, err = client.Trigger(ctx, &kk_schedule.Trigger_Input{
 			FuncName: funcName,
 		})
 		if err != nil {

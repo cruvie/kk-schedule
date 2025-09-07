@@ -7,8 +7,8 @@ import (
 	"gitee.com/cruvie/kk_go_kit/kk_server"
 	"gitee.com/cruvie/kk_go_kit/kk_stage"
 	"gitee.com/cruvie/kk_go_kit/kk_time"
-	"github.com/cruvie/kk-schedule/internal/g_config"
-	"github.com/cruvie/kk-schedule/internal/schedule"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/g_config"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/schedule"
 )
 
 var configSlog kk_stage.ConfigLog
@@ -28,7 +28,7 @@ func main() {
 		defer configSlog.Close()
 	}
 
-	kk_stage.Print2Std("kk-schedule version: 0.0.1")
+	kk_stage.Print2Std("kk-schedule version: 0.1.0")
 
 	kkServer := kk_server.NewKKServer(10*time.Second, stage)
 	kkServer.Add("kk-schedule", 0, schedule.NewScheduleServer())

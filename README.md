@@ -59,7 +59,7 @@ visit http://localhost:8668
 - install
 
 ```shell
-go get github.com/cruvie/kk-schedule@latest
+go get github.com/cruvie/kk-schedule-server@latest
 ```
 
 - Run a grpc server that implemented `kk_schedule.UnimplementedKKScheduleTriggerServer`

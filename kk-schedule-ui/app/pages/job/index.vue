@@ -30,6 +30,7 @@
             <el-button @click="handleDisableJob(scope.row)" :disabled="!scope.row.Enabled">Disable</el-button>
             <el-button @click="handleEditJob(scope.row)">Edit</el-button>
             <el-button @click="handleSetSpecJob(scope.row)">Set Spec</el-button>
+            <el-button type="primary" @click="handleTriggerJob(scope.row)">Trigger</el-button>
             <el-button type="danger" @click="handleDeleteJob(scope.row)">Delete</el-button>
           </div>
         </template>
@@ -56,9 +57,10 @@ import { JobEnable_InputSchema } from "~~/gen/kk_schedule/JobEnable_pb";
 import { JobDisable_InputSchema } from "~~/gen/kk_schedule/JobDisable_pb";
 import { JobDelete_InputSchema } from "~~/gen/kk_schedule/JobDelete_pb";
 import { JobPut_InputSchema } from "~~/gen/kk_schedule/JobPut_pb";
+import { JobTrigger_InputSchema } from "~~/gen/kk_schedule/JobTrigger_pb";
 import JobForm from '~/components/JobForm.vue';
 import JobSetSpecForm from '~/components/JobSetSpecForm.vue';
-import { ElRow, ElCol, ElMessage } from 'element-plus';
+import { ElRow, ElCol, ElMessage, ElMessageBox } from 'element-plus';
 
 const jobs = ref<PBJob[]>([]);
 const jobFormRef = ref<InstanceType<typeof JobForm> | null>(null);
@@ -89,13 +91,28 @@ const handleDisableJob = async (job: PBJob) => {
 };
 
 const handleDeleteJob = async (job: PBJob) => {
-  try {
-    const request = create(JobDelete_InputSchema, { serviceName: job.ServiceName, funcName: job.FuncName });
-    await clientKKSchedule.jobDelete(request);
-    await fetchJobs();
-  } catch (error) {
-    ElMessage.error('Error deleting job: ' + error);
-  }
+  ElMessageBox.confirm(
+    `Are you sure you want to delete job "${job.FuncName}" from service "${job.ServiceName}"?`,
+    'Warning',
+    {
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      type: 'warning',
+    }
+  )
+    .then(async () => {
+      try {
+        const request = create(JobDelete_InputSchema, { serviceName: job.ServiceName, funcName: job.FuncName });
+        await clientKKSchedule.jobDelete(request);
+        await fetchJobs();
+        ElMessage.success('Job deleted successfully');
+      } catch (error) {
+        ElMessage.error('Error deleting job: ' + error);
+      }
+    })
+    .catch(() => {
+      ElMessage.info('Delete canceled');
+    });
 };
 
 const handleEnableJob = async (job: PBJob) => {
@@ -118,6 +135,34 @@ const handleCreateJob = () => {
 
 const handleSetSpecJob = (job: PBJob) => {
   jobSetSpecFormRef.value?.open(job);
+};
+
+const handleTriggerJob = async (job: PBJob) => {
+  try {
+    ElMessageBox.confirm(
+      `Are you sure you want to trigger job "${job.FuncName}" from service "${job.ServiceName}" manually?`,
+      'Confirmation',
+      {
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        type: 'info',
+      }
+    )
+      .then(async () => {
+        try {
+          const request = create(JobTrigger_InputSchema, { serviceName: job.ServiceName, funcName: job.FuncName });
+          await clientKKSchedule.jobTrigger(request);
+          ElMessage.success(`Job "${job.FuncName}" triggered successfully`);
+        } catch (error) {
+          ElMessage.error('Error triggering job: ' + error);
+        }
+      })
+      .catch(() => {
+        ElMessage.info('Trigger canceled');
+      });
+  } catch (error) {
+    ElMessage.error('Error: ' + error);
+  }
 };
 
 </script>

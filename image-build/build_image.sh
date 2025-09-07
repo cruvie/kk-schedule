@@ -18,7 +18,7 @@ cd ..
 
 export GOVERSION=1.24.7
 
-export TAG=0.0.1
+export TAG=0.1.0
 
 
 # local build test
@@ -35,14 +35,6 @@ export TAG=0.0.1
 docker buildx build --platform linux/amd64,linux/arm64  \
             --build-arg GOVERSION=${GOVERSION} \
             -t cruvie/kk-schedule:${TAG} \
-            -f ./image-build/Dockerfile . \
-            --push
-)
-
-
-(
-docker buildx build --platform linux/amd64,linux/arm64  \
-            --build-arg GOVERSION=${GOVERSION} \
             -t cruvie/kk-schedule:latest \
             -f ./image-build/Dockerfile . \
             --push

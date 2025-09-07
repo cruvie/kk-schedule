@@ -3,31 +3,22 @@ package api_impl
 import (
 	"context"
 
-	"github.com/cruvie/kk-schedule/internal/api_handlers/jobDelete"
-	"github.com/cruvie/kk-schedule/internal/api_handlers/serviceList"
-	"google.golang.org/grpc"
-
 	"gitee.com/cruvie/kk_go_kit/kk_grpc"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobDelete"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobTrigger"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/serviceList"
 
-	"github.com/cruvie/kk-schedule/internal/api_handlers/jobDisable"
-	"github.com/cruvie/kk-schedule/internal/api_handlers/jobEnable"
-	"github.com/cruvie/kk-schedule/internal/api_handlers/jobGet"
-	"github.com/cruvie/kk-schedule/internal/api_handlers/jobList"
-	"github.com/cruvie/kk-schedule/internal/api_handlers/jobPut"
-	"github.com/cruvie/kk-schedule/internal/api_handlers/jobSetSpec"
-	"github.com/cruvie/kk-schedule/internal/api_handlers/serviceDelete"
-	"github.com/cruvie/kk-schedule/internal/api_handlers/serviceGet"
-	"github.com/cruvie/kk-schedule/internal/api_handlers/servicePut"
-	"github.com/cruvie/kk-schedule/kk_schedule"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobDisable"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobEnable"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobGet"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobList"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobPut"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobSetSpec"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/serviceDelete"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/serviceGet"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/servicePut"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/kk_schedule"
 )
-
-type server struct {
-	kk_schedule.UnimplementedKKScheduleServer
-}
-
-func RegisterServer(grpcServer *grpc.Server) {
-	kk_schedule.RegisterKKScheduleServer(grpcServer, &server{})
-}
 
 func (x *server) JobList(ctx context.Context, input *kk_schedule.JobList_Input) (*kk_schedule.JobList_Output, error) {
 	return kk_grpc.GrpcHandler(
@@ -82,6 +73,14 @@ func (x *server) JobDelete(ctx context.Context, input *kk_schedule.JobDelete_Inp
 		ctx,
 		input,
 		jobDelete.NewApi,
+	)
+}
+
+func (x *server) JobTrigger(ctx context.Context, input *kk_schedule.JobTrigger_Input) (*kk_schedule.JobTrigger_Output, error) {
+	return kk_grpc.GrpcHandler(
+		ctx,
+		input,
+		jobTrigger.NewApi,
 	)
 }
 

@@ -15,6 +15,7 @@ import "kk_schedule/ServicePut.proto";
 import "kk_schedule/ServiceGet.proto";
 import "kk_schedule/ServiceDelete.proto";
 import "kk_schedule/JobDelete.proto";
+import "kk_schedule/JobTrigger.proto";
 
 service KKSchedule {
   // use GClient
@@ -26,6 +27,7 @@ service KKSchedule {
   rpc JobDisable(JobDisable.Input) returns (JobDisable.Output);
   rpc JobPut(JobPut.Input) returns (JobPut.Output);
   rpc JobDelete(JobDelete.Input) returns (JobDelete.Output);
+  rpc JobTrigger(JobTrigger.Input) returns (JobTrigger.Output);
 
   // use GClient.Storer
 

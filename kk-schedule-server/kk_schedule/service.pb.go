@@ -24,7 +24,7 @@ var File_kk_schedule_service_proto protoreflect.FileDescriptor
 
 const file_kk_schedule_service_proto_rawDesc = "" +
 	"\n" +
-	"\x19kk_schedule/service.proto\x12\vkk_schedule\x1a\x19kk_schedule/JobList.proto\x1a\x18kk_schedule/JobGet.proto\x1a\x1bkk_schedule/JobEnable.proto\x1a\x1ckk_schedule/JobDisable.proto\x1a\x1ckk_schedule/JobSetSpec.proto\x1a\x18kk_schedule/JobPut.proto\x1a\x1dkk_schedule/ServiceList.proto\x1a\x1ckk_schedule/ServicePut.proto\x1a\x1ckk_schedule/ServiceGet.proto\x1a\x1fkk_schedule/ServiceDelete.proto\x1a\x1bkk_schedule/JobDelete.proto2\xc0\x06\n" +
+	"\x19kk_schedule/service.proto\x12\vkk_schedule\x1a\x19kk_schedule/JobList.proto\x1a\x18kk_schedule/JobGet.proto\x1a\x1bkk_schedule/JobEnable.proto\x1a\x1ckk_schedule/JobDisable.proto\x1a\x1ckk_schedule/JobSetSpec.proto\x1a\x18kk_schedule/JobPut.proto\x1a\x1dkk_schedule/ServiceList.proto\x1a\x1ckk_schedule/ServicePut.proto\x1a\x1ckk_schedule/ServiceGet.proto\x1a\x1fkk_schedule/ServiceDelete.proto\x1a\x1bkk_schedule/JobDelete.proto\x1a\x1ckk_schedule/JobTrigger.proto2\x8d\a\n" +
 	"\n" +
 	"KKSchedule\x12B\n" +
 	"\aJobList\x12\x1a.kk_schedule.JobList.Input\x1a\x1b.kk_schedule.JobList.Output\x12?\n" +
@@ -35,7 +35,9 @@ const file_kk_schedule_service_proto_rawDesc = "" +
 	"\n" +
 	"JobDisable\x12\x1d.kk_schedule.JobDisable.Input\x1a\x1e.kk_schedule.JobDisable.Output\x12?\n" +
 	"\x06JobPut\x12\x19.kk_schedule.JobPut.Input\x1a\x1a.kk_schedule.JobPut.Output\x12H\n" +
-	"\tJobDelete\x12\x1c.kk_schedule.JobDelete.Input\x1a\x1d.kk_schedule.JobDelete.Output\x12N\n" +
+	"\tJobDelete\x12\x1c.kk_schedule.JobDelete.Input\x1a\x1d.kk_schedule.JobDelete.Output\x12K\n" +
+	"\n" +
+	"JobTrigger\x12\x1d.kk_schedule.JobTrigger.Input\x1a\x1e.kk_schedule.JobTrigger.Output\x12N\n" +
 	"\vServiceList\x12\x1e.kk_schedule.ServiceList.Input\x1a\x1f.kk_schedule.ServiceList.Output\x12K\n" +
 	"\n" +
 	"ServicePut\x12\x1d.kk_schedule.ServicePut.Input\x1a\x1e.kk_schedule.ServicePut.Output\x12K\n" +
@@ -51,21 +53,23 @@ var file_kk_schedule_service_proto_goTypes = []any{
 	(*JobDisable_Input)(nil),     // 4: kk_schedule.JobDisable.Input
 	(*JobPut_Input)(nil),         // 5: kk_schedule.JobPut.Input
 	(*JobDelete_Input)(nil),      // 6: kk_schedule.JobDelete.Input
-	(*ServiceList_Input)(nil),    // 7: kk_schedule.ServiceList.Input
-	(*ServicePut_Input)(nil),     // 8: kk_schedule.ServicePut.Input
-	(*ServiceGet_Input)(nil),     // 9: kk_schedule.ServiceGet.Input
-	(*ServiceDelete_Input)(nil),  // 10: kk_schedule.ServiceDelete.Input
-	(*JobList_Output)(nil),       // 11: kk_schedule.JobList.Output
-	(*JobGet_Output)(nil),        // 12: kk_schedule.JobGet.Output
-	(*JobSetSpec_Output)(nil),    // 13: kk_schedule.JobSetSpec.Output
-	(*JobEnable_Output)(nil),     // 14: kk_schedule.JobEnable.Output
-	(*JobDisable_Output)(nil),    // 15: kk_schedule.JobDisable.Output
-	(*JobPut_Output)(nil),        // 16: kk_schedule.JobPut.Output
-	(*JobDelete_Output)(nil),     // 17: kk_schedule.JobDelete.Output
-	(*ServiceList_Output)(nil),   // 18: kk_schedule.ServiceList.Output
-	(*ServicePut_Output)(nil),    // 19: kk_schedule.ServicePut.Output
-	(*ServiceGet_Output)(nil),    // 20: kk_schedule.ServiceGet.Output
-	(*ServiceDelete_Output)(nil), // 21: kk_schedule.ServiceDelete.Output
+	(*JobTrigger_Input)(nil),     // 7: kk_schedule.JobTrigger.Input
+	(*ServiceList_Input)(nil),    // 8: kk_schedule.ServiceList.Input
+	(*ServicePut_Input)(nil),     // 9: kk_schedule.ServicePut.Input
+	(*ServiceGet_Input)(nil),     // 10: kk_schedule.ServiceGet.Input
+	(*ServiceDelete_Input)(nil),  // 11: kk_schedule.ServiceDelete.Input
+	(*JobList_Output)(nil),       // 12: kk_schedule.JobList.Output
+	(*JobGet_Output)(nil),        // 13: kk_schedule.JobGet.Output
+	(*JobSetSpec_Output)(nil),    // 14: kk_schedule.JobSetSpec.Output
+	(*JobEnable_Output)(nil),     // 15: kk_schedule.JobEnable.Output
+	(*JobDisable_Output)(nil),    // 16: kk_schedule.JobDisable.Output
+	(*JobPut_Output)(nil),        // 17: kk_schedule.JobPut.Output
+	(*JobDelete_Output)(nil),     // 18: kk_schedule.JobDelete.Output
+	(*JobTrigger_Output)(nil),    // 19: kk_schedule.JobTrigger.Output
+	(*ServiceList_Output)(nil),   // 20: kk_schedule.ServiceList.Output
+	(*ServicePut_Output)(nil),    // 21: kk_schedule.ServicePut.Output
+	(*ServiceGet_Output)(nil),    // 22: kk_schedule.ServiceGet.Output
+	(*ServiceDelete_Output)(nil), // 23: kk_schedule.ServiceDelete.Output
 }
 var file_kk_schedule_service_proto_depIdxs = []int32{
 	0,  // 0: kk_schedule.KKSchedule.JobList:input_type -> kk_schedule.JobList.Input
@@ -75,23 +79,25 @@ var file_kk_schedule_service_proto_depIdxs = []int32{
 	4,  // 4: kk_schedule.KKSchedule.JobDisable:input_type -> kk_schedule.JobDisable.Input
 	5,  // 5: kk_schedule.KKSchedule.JobPut:input_type -> kk_schedule.JobPut.Input
 	6,  // 6: kk_schedule.KKSchedule.JobDelete:input_type -> kk_schedule.JobDelete.Input
-	7,  // 7: kk_schedule.KKSchedule.ServiceList:input_type -> kk_schedule.ServiceList.Input
-	8,  // 8: kk_schedule.KKSchedule.ServicePut:input_type -> kk_schedule.ServicePut.Input
-	9,  // 9: kk_schedule.KKSchedule.ServiceGet:input_type -> kk_schedule.ServiceGet.Input
-	10, // 10: kk_schedule.KKSchedule.ServiceDelete:input_type -> kk_schedule.ServiceDelete.Input
-	11, // 11: kk_schedule.KKSchedule.JobList:output_type -> kk_schedule.JobList.Output
-	12, // 12: kk_schedule.KKSchedule.JobGet:output_type -> kk_schedule.JobGet.Output
-	13, // 13: kk_schedule.KKSchedule.JobSetSpec:output_type -> kk_schedule.JobSetSpec.Output
-	14, // 14: kk_schedule.KKSchedule.JobEnable:output_type -> kk_schedule.JobEnable.Output
-	15, // 15: kk_schedule.KKSchedule.JobDisable:output_type -> kk_schedule.JobDisable.Output
-	16, // 16: kk_schedule.KKSchedule.JobPut:output_type -> kk_schedule.JobPut.Output
-	17, // 17: kk_schedule.KKSchedule.JobDelete:output_type -> kk_schedule.JobDelete.Output
-	18, // 18: kk_schedule.KKSchedule.ServiceList:output_type -> kk_schedule.ServiceList.Output
-	19, // 19: kk_schedule.KKSchedule.ServicePut:output_type -> kk_schedule.ServicePut.Output
-	20, // 20: kk_schedule.KKSchedule.ServiceGet:output_type -> kk_schedule.ServiceGet.Output
-	21, // 21: kk_schedule.KKSchedule.ServiceDelete:output_type -> kk_schedule.ServiceDelete.Output
-	11, // [11:22] is the sub-list for method output_type
-	0,  // [0:11] is the sub-list for method input_type
+	7,  // 7: kk_schedule.KKSchedule.JobTrigger:input_type -> kk_schedule.JobTrigger.Input
+	8,  // 8: kk_schedule.KKSchedule.ServiceList:input_type -> kk_schedule.ServiceList.Input
+	9,  // 9: kk_schedule.KKSchedule.ServicePut:input_type -> kk_schedule.ServicePut.Input
+	10, // 10: kk_schedule.KKSchedule.ServiceGet:input_type -> kk_schedule.ServiceGet.Input
+	11, // 11: kk_schedule.KKSchedule.ServiceDelete:input_type -> kk_schedule.ServiceDelete.Input
+	12, // 12: kk_schedule.KKSchedule.JobList:output_type -> kk_schedule.JobList.Output
+	13, // 13: kk_schedule.KKSchedule.JobGet:output_type -> kk_schedule.JobGet.Output
+	14, // 14: kk_schedule.KKSchedule.JobSetSpec:output_type -> kk_schedule.JobSetSpec.Output
+	15, // 15: kk_schedule.KKSchedule.JobEnable:output_type -> kk_schedule.JobEnable.Output
+	16, // 16: kk_schedule.KKSchedule.JobDisable:output_type -> kk_schedule.JobDisable.Output
+	17, // 17: kk_schedule.KKSchedule.JobPut:output_type -> kk_schedule.JobPut.Output
+	18, // 18: kk_schedule.KKSchedule.JobDelete:output_type -> kk_schedule.JobDelete.Output
+	19, // 19: kk_schedule.KKSchedule.JobTrigger:output_type -> kk_schedule.JobTrigger.Output
+	20, // 20: kk_schedule.KKSchedule.ServiceList:output_type -> kk_schedule.ServiceList.Output
+	21, // 21: kk_schedule.KKSchedule.ServicePut:output_type -> kk_schedule.ServicePut.Output
+	22, // 22: kk_schedule.KKSchedule.ServiceGet:output_type -> kk_schedule.ServiceGet.Output
+	23, // 23: kk_schedule.KKSchedule.ServiceDelete:output_type -> kk_schedule.ServiceDelete.Output
+	12, // [12:24] is the sub-list for method output_type
+	0,  // [0:12] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -113,6 +119,7 @@ func file_kk_schedule_service_proto_init() {
 	file_kk_schedule_ServiceGet_proto_init()
 	file_kk_schedule_ServiceDelete_proto_init()
 	file_kk_schedule_JobDelete_proto_init()
+	file_kk_schedule_JobTrigger_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

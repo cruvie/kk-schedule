@@ -26,6 +26,7 @@ const (
 	KKSchedule_JobDisable_FullMethodName    = "/kk_schedule.KKSchedule/JobDisable"
 	KKSchedule_JobPut_FullMethodName        = "/kk_schedule.KKSchedule/JobPut"
 	KKSchedule_JobDelete_FullMethodName     = "/kk_schedule.KKSchedule/JobDelete"
+	KKSchedule_JobTrigger_FullMethodName    = "/kk_schedule.KKSchedule/JobTrigger"
 	KKSchedule_ServiceList_FullMethodName   = "/kk_schedule.KKSchedule/ServiceList"
 	KKSchedule_ServicePut_FullMethodName    = "/kk_schedule.KKSchedule/ServicePut"
 	KKSchedule_ServiceGet_FullMethodName    = "/kk_schedule.KKSchedule/ServiceGet"
@@ -43,6 +44,7 @@ type KKScheduleClient interface {
 	JobDisable(ctx context.Context, in *JobDisable_Input, opts ...grpc.CallOption) (*JobDisable_Output, error)
 	JobPut(ctx context.Context, in *JobPut_Input, opts ...grpc.CallOption) (*JobPut_Output, error)
 	JobDelete(ctx context.Context, in *JobDelete_Input, opts ...grpc.CallOption) (*JobDelete_Output, error)
+	JobTrigger(ctx context.Context, in *JobTrigger_Input, opts ...grpc.CallOption) (*JobTrigger_Output, error)
 	ServiceList(ctx context.Context, in *ServiceList_Input, opts ...grpc.CallOption) (*ServiceList_Output, error)
 	ServicePut(ctx context.Context, in *ServicePut_Input, opts ...grpc.CallOption) (*ServicePut_Output, error)
 	ServiceGet(ctx context.Context, in *ServiceGet_Input, opts ...grpc.CallOption) (*ServiceGet_Output, error)
@@ -127,6 +129,16 @@ func (c *kKScheduleClient) JobDelete(ctx context.Context, in *JobDelete_Input, o
 	return out, nil
 }
 
+func (c *kKScheduleClient) JobTrigger(ctx context.Context, in *JobTrigger_Input, opts ...grpc.CallOption) (*JobTrigger_Output, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(JobTrigger_Output)
+	err := c.cc.Invoke(ctx, KKSchedule_JobTrigger_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *kKScheduleClient) ServiceList(ctx context.Context, in *ServiceList_Input, opts ...grpc.CallOption) (*ServiceList_Output, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ServiceList_Output)
@@ -178,6 +190,7 @@ type KKScheduleServer interface {
 	JobDisable(context.Context, *JobDisable_Input) (*JobDisable_Output, error)
 	JobPut(context.Context, *JobPut_Input) (*JobPut_Output, error)
 	JobDelete(context.Context, *JobDelete_Input) (*JobDelete_Output, error)
+	JobTrigger(context.Context, *JobTrigger_Input) (*JobTrigger_Output, error)
 	ServiceList(context.Context, *ServiceList_Input) (*ServiceList_Output, error)
 	ServicePut(context.Context, *ServicePut_Input) (*ServicePut_Output, error)
 	ServiceGet(context.Context, *ServiceGet_Input) (*ServiceGet_Output, error)
@@ -212,6 +225,9 @@ func (UnimplementedKKScheduleServer) JobPut(context.Context, *JobPut_Input) (*Jo
 }
 func (UnimplementedKKScheduleServer) JobDelete(context.Context, *JobDelete_Input) (*JobDelete_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JobDelete not implemented")
+}
+func (UnimplementedKKScheduleServer) JobTrigger(context.Context, *JobTrigger_Input) (*JobTrigger_Output, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JobTrigger not implemented")
 }
 func (UnimplementedKKScheduleServer) ServiceList(context.Context, *ServiceList_Input) (*ServiceList_Output, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ServiceList not implemented")
@@ -372,6 +388,24 @@ func _KKSchedule_JobDelete_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _KKSchedule_JobTrigger_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JobTrigger_Input)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KKScheduleServer).JobTrigger(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KKSchedule_JobTrigger_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KKScheduleServer).JobTrigger(ctx, req.(*JobTrigger_Input))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _KKSchedule_ServiceList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ServiceList_Input)
 	if err := dec(in); err != nil {
@@ -478,6 +512,10 @@ var KKSchedule_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "JobDelete",
 			Handler:    _KKSchedule_JobDelete_Handler,
+		},
+		{
+			MethodName: "JobTrigger",
+			Handler:    _KKSchedule_JobTrigger_Handler,
 		},
 		{
 			MethodName: "ServiceList",

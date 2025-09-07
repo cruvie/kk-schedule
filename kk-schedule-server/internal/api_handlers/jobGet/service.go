@@ -2,8 +2,8 @@ package jobGet
 
 import (
 	"gitee.com/cruvie/kk_go_kit/kk_stage"
-	"github.com/cruvie/kk-schedule/internal/schedule"
-	"github.com/cruvie/kk-schedule/kk_schedule"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/schedule"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/kk_schedule"
 )
 
 func (x *Api) Service(stage *kk_stage.Stage) (*kk_schedule.PBJob, error) {

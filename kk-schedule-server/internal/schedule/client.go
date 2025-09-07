@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/cruvie/kk-schedule/kk_schedule"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/kk_schedule"
 	"github.com/robfig/cron/v3"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -131,7 +131,7 @@ func (x *Client) JobList(serviceName string) ([]*kk_schedule.PBJob, error) {
 		return !b
 	})
 	pbJobs = append(pbJobs, noSpecJobList...)
-	//sort by serviceName
+	// sort by serviceName
 	slices.SortFunc(pbJobs, func(a, b *kk_schedule.PBJob) int {
 		return strings.Compare(a.ServiceName, b.ServiceName)
 	})
@@ -224,6 +224,18 @@ func (x *Client) JobDelete(serviceName, funcName string) error {
 		return err
 	}
 	return x.storer.JobDelete(serviceName, funcName)
+}
+
+// JobTrigger triggers a job manually
+func (x *Client) JobTrigger(serviceName, funcName string) error {
+	service, err := x.storer.ServiceGet(serviceName)
+	if err != nil {
+		return err
+	}
+
+	// Trigger the job function directly
+	triggerFunc(service, funcName)()
+	return nil
 }
 
 func (x *Client) ServiceList() ([]*kk_schedule.PBRegisterService, error) {

@@ -35,7 +35,7 @@ import type {PBRegisterService} from '~~/gen/kk_schedule/Base_pb';
 import {ServiceList_InputSchema} from '~~/gen/kk_schedule/ServiceList_pb';
 import {create} from '@bufbuild/protobuf';
 import {ServiceDelete_InputSchema} from '~~/gen/kk_schedule/ServiceDelete_pb';
-import {ElMessage} from 'element-plus';
+import {ElMessage, ElMessageBox} from 'element-plus';
 
 const services = ref<PBRegisterService[]>([]);
 const serviceFormRef = ref<InstanceType<typeof ServiceForm> | null>(null);
@@ -63,12 +63,27 @@ const handleCreateService = () => {
 };
 
 const handleDeleteService = async (service: PBRegisterService) => {
-  try {
-    const request = create(ServiceDelete_InputSchema, {ServiceName: service.ServiceName});
-    await clientKKSchedule.serviceDelete(request);
-    await fetchServices();
-  } catch (error) {
-    ElMessage.error('Error deleting service: ' + error);
-  }
+  ElMessageBox.confirm(
+    `Are you sure you want to delete service "${service.ServiceName}"?`,
+    'Warning',
+    {
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      type: 'warning',
+    }
+  )
+    .then(async () => {
+      try {
+        const request = create(ServiceDelete_InputSchema, {ServiceName: service.ServiceName});
+        await clientKKSchedule.serviceDelete(request);
+        await fetchServices();
+        ElMessage.success('Service deleted successfully');
+      } catch (error) {
+        ElMessage.error('Error deleting service: ' + error);
+      }
+    })
+    .catch(() => {
+      ElMessage.info('Delete canceled');
+    });
 };
 </script>

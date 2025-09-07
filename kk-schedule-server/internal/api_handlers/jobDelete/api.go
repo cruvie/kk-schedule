@@ -2,7 +2,7 @@ package jobDelete
 
 import (
 	"gitee.com/cruvie/kk_go_kit/kk_grpc"
-	"github.com/cruvie/kk-schedule/kk_schedule"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/kk_schedule"
 )
 
 type Api struct {

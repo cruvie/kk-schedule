@@ -11,8 +11,8 @@ import (
 	"gitee.com/cruvie/kk_go_kit/kk_grpc/interceptor"
 	"gitee.com/cruvie/kk_go_kit/kk_server"
 	"gitee.com/cruvie/kk_go_kit/kk_stage"
-	"github.com/cruvie/kk-schedule/internal/api_impl"
-	"github.com/cruvie/kk-schedule/internal/g_config"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_impl"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/g_config"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
@@ -21,7 +21,6 @@ import (
 )
 
 func getGrpcServer() *grpc.Server {
-
 	api_impl.RegisterFileDesc()
 
 	grpcServer := grpc.NewServer(
@@ -42,6 +41,7 @@ func getGrpcServer() *grpc.Server {
 
 	return grpcServer
 }
+
 func NewGrpcServer(stage *kk_stage.Stage) *kk_server.KKRunServer {
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", g_config.Config.GrpcPort))
 	if err != nil {

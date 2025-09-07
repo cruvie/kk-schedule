@@ -6,7 +6,7 @@ import (
 
 	"gitee.com/cruvie/kk_go_kit/kk_server"
 	"gitee.com/cruvie/kk_go_kit/kk_stage"
-	"github.com/cruvie/kk-schedule/internal/g_config"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/g_config"
 )
 
 func NewWebServer(stage *kk_stage.Stage) *kk_server.KKRunServer {
@@ -18,11 +18,9 @@ func NewWebServer(stage *kk_stage.Stage) *kk_server.KKRunServer {
 		if err != nil {
 			panic(err)
 		}
-
 	}
 	done := func(quitCh <-chan struct{}) {
 		<-quitCh
-
 	}
 
 	return &kk_server.KKRunServer{
