@@ -1,37 +1,39 @@
 <template>
-  <el-dialog v-model="dialogVisible" :title="isEdit ? 'Edit Job' : 'Create Job'" width="50%">
-    <el-form :model="form" label-width="120px">
-      <el-form-item label="Description">
-        <el-input v-model="form.Description"></el-input>
-      </el-form-item>
-      <el-form-item label="Function Name">
-        <el-input v-model="form.FuncName" :disabled="isEdit"></el-input>
-      </el-form-item>
-      <el-form-item label="Service Name">
-        <el-input v-model="form.ServiceName"></el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="handleSave">Confirm</el-button>
-      </span>
+  <UModal v-model:open="dialogVisible" :title="isEdit ? 'Edit Job' : 'Create Job'">
+    <template #body>
+      <UForm :state="form" >
+        <UFormField label="Description" name="Description">
+          <UInput v-model="form.Description" />
+        </UFormField>
+
+        <UFormField label="Function Name" name="FuncName">
+          <UInput v-model="form.FuncName" :disabled="isEdit" />
+        </UFormField>
+
+        <UFormField label="Service Name" name="ServiceName">
+          <UInput v-model="form.ServiceName" />
+        </UFormField>
+      </UForm>
     </template>
-  </el-dialog>
+    <template #footer>
+      <UButton color="neutral" @click="dialogVisible = false">Cancel</UButton>
+      <UButton type="submit" @click="handleSave">Confirm</UButton>
+    </template>
+  </UModal>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { ElMessage } from 'element-plus';
 import { clientKKSchedule } from '~/utils/api/client';
 import { JobPut_InputSchema } from '~~/gen/kk_schedule/JobPut_pb';
-import {type PBJob, PBJobSchema} from '~~/gen/kk_schedule/Job_pb';
-import { TimestampSchema } from '~~/gen/google/protobuf/timestamp_pb';
+import {type PBJob} from '~~/gen/kk_schedule/Job_pb';
 import {create} from "@bufbuild/protobuf";
 import { PBRegisterJobSchema, type PBRegisterJob } from '~~/gen/kk_schedule/Base_pb';
+import { useToast } from '#imports';
 
 const dialogVisible = ref(false);
 const isEdit = ref(false);
+const toast = useToast();
 
 const form = reactive<PBRegisterJob>(create(PBRegisterJobSchema, {
   Description: '',
@@ -70,7 +72,7 @@ const handleSave = async () => {
         }),
       });
       await clientKKSchedule.jobPut(putRequest);
-      ElMessage.success('Job updated successfully!');
+      toast.add({title: 'Job updated successfully!', color: 'success'});
     } else {
       const request = create(JobPut_InputSchema, {
         Job: create(PBRegisterJobSchema, {
@@ -80,12 +82,12 @@ const handleSave = async () => {
         }),
       });
       await clientKKSchedule.jobPut(request);
-      ElMessage.success('Job created successfully!');
+      toast.add({title: 'Job created successfully!', color: 'success'});
     }
     dialogVisible.value = false;
     emit('jobUpdated');
   } catch (error) {
-    ElMessage.error('Error saving job: ' + error);
+    toast.add({title: 'Error saving job', description: String(error), color: 'error'});
   }
 };
 
@@ -93,9 +95,3 @@ defineExpose({
   open,
 });
 </script>
-
-<style scoped>
-.dialog-footer button:first-child {
-  margin-right: 10px;
-}
-</style>

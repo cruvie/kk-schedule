@@ -9,9 +9,12 @@ export default defineNuxtConfig({
     compatibilityDate: '2025-09-05',
     devtools: {enabled: true},
     modules: [
-        '@element-plus/nuxt'
+        '@nuxt/ui'
     ],
+    css: ['~/assets/css/main.css'],
     build: {
     },
-    elementPlus: { /** Options */}
+    ui: {
+        fonts: false,
+    },
 })
