@@ -1,32 +1,50 @@
 <template>
-  <el-container>
-    <el-main>
-      <el-card class="box-card">
+  <div class="container">
+    <div class="main">
+      <UCard class="box-card">
         <template #header>
           <div class="card-header">
-            <el-text tag="h1" size="large">Welcome to kk-schedule</el-text>
+            <h1>Welcome to kk-schedule</h1>
           </div>
         </template>
-        <el-text>
+        <p>
           This is a frontend interface for kk-schedule.
-        </el-text>
-        <el-text>
+        </p>
+        <p>
           You can manage your tasks and schedules here.
-        </el-text>
+        </p>
         <div style="margin-top: 20px;">
-          <el-link type="primary" href="https://github.com/cruvie/kk-scheduler" target="_blank">
+          <UButton 
+            variant="link" 
+            color="primary" 
+            to="https://github.com/cruvie/kk-scheduler" 
+            target="_blank"
+          >
             Visit GitHub Repository
-          </el-link>
+          </UButton>
         </div>
-      </el-card>
-    </el-main>
-  </el-container>
+      </UCard>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .box-card {
   width: 480px;
-  margin: 50px auto;
   text-align: center;
 }
 

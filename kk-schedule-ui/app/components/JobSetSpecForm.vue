@@ -1,34 +1,37 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="Set Job Spec" width="50%">
-    <el-form :model="form" label-width="120px">
-      <el-form-item label="Service Name">
-        <el-input v-model="form.ServiceName" :disabled="true"></el-input>
-      </el-form-item>
-      <el-form-item label="Function Name">
-        <el-input v-model="form.FuncName" :disabled="true"></el-input>
-      </el-form-item>
-      <el-form-item label="Spec">
-        <el-input v-model="form.Spec" type="textarea" :rows="5"></el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="handleSave">Confirm</el-button>
-      </span>
+  <UModal v-model:open="dialogVisible" title="Set Job Spec">
+    <template #body>
+      <UForm :state="form">
+        <UFormField label="Service Name" name="ServiceName">
+          <UInput v-model="form.ServiceName" disabled/>
+        </UFormField>
+
+        <UFormField label="Function Name" name="FuncName">
+          <UInput v-model="form.FuncName" disabled/>
+        </UFormField>
+
+        <UFormField label="Spec" name="Spec">
+          <UTextarea v-model="form.Spec" :rows="5"/>
+        </UFormField>
+      </UForm>
     </template>
-  </el-dialog>
+    <template #footer>
+      <UButton color="neutral" @click="dialogVisible = false">Cancel</UButton>
+      <UButton type="submit" @click="handleSave">Confirm</UButton>
+    </template>
+  </UModal>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-import { ElMessage } from 'element-plus';
-import { clientKKSchedule } from '~/utils/api/client';
-import { JobSetSpec_InputSchema } from '~~/gen/kk_schedule/JobSetSpec_pb';
-import { create } from "@bufbuild/protobuf";
-import type { PBJob } from '~~/gen/kk_schedule/Job_pb';
+import {ref, reactive} from 'vue';
+import {clientKKSchedule} from '~/utils/api/client';
+import {JobSetSpec_InputSchema} from '~~/gen/kk_schedule/JobSetSpec_pb';
+import {create} from "@bufbuild/protobuf";
+import type {PBJob} from '~~/gen/kk_schedule/Job_pb';
+import { useToast } from '#imports';
 
 const dialogVisible = ref(false);
+const toast = useToast();
 
 const form = reactive({
   ServiceName: '',
@@ -53,11 +56,11 @@ const handleSave = async () => {
       spec: form.Spec,
     });
     await clientKKSchedule.jobSetSpec(request);
-    ElMessage.success('Job spec updated successfully!');
+    toast.add({title: 'Job spec updated successfully!', color: 'success'});
     dialogVisible.value = false;
     emit('jobUpdated');
   } catch (error) {
-    ElMessage.error('Error setting job spec: ' + error);
+    toast.add({title: 'Error setting job spec', description: String(error), color: 'error'});
   }
 };
 
@@ -65,9 +68,3 @@ defineExpose({
   open,
 });
 </script>
-
-<style scoped>
-.dialog-footer button:first-child {
-  margin-right: 10px;
-}
-</style>
