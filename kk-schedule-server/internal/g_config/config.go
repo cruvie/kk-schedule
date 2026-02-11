@@ -4,8 +4,13 @@ import (
 	"log/slog"
 	"os"
 
+	"gitee.com/cruvie/kk_go_kit/kk_env"
 	"gopkg.in/yaml.v3"
 )
+
+func init() {
+	kk_env.SetEnv(kk_env.Env(os.Getenv("KK_Schedule")))
+}
 
 var Config config
 
