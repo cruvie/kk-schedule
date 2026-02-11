@@ -4,6 +4,8 @@ services:
     image: cruvie/kk-schedule:latest
     container_name: kk-schedule
     restart: unless-stopped
+    environment:
+      KK_Schedule: "prod"
     ports:
       - "8666:8666"
       - "8667:8667"

@@ -16,9 +16,9 @@ cd ..
 #docker pull --platform linux/amd64 alpine:latest
 #docker pull --platform linux/arm64 alpine:latest
 
-export GOVERSION=1.24.7
+export GOVERSION=1.25.0
 
-export TAG=0.1.0
+export TAG=0.1.1
 
 
 # local build test

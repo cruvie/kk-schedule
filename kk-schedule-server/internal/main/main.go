@@ -27,9 +27,6 @@ func main() {
 		configSlog.Init()
 		defer configSlog.Close()
 	}
-
-	kk_stage.Print2Std("kk-schedule version: 0.1.0")
-
 	kkServer := kk_server.NewKKServer(10*time.Second, stage)
 	kkServer.Add("kk-schedule", 0, schedule.NewScheduleServer())
 	kkServer.Add("kk-schedule-grpc", 0, NewGrpcServer(stage))
