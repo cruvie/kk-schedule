@@ -13,4 +13,23 @@ services:
     volumes:
       - ./config.yml:/kk-schedule/config.yml
 
-
+  test-etcd:
+    image: quay.io/coreos/etcd:v3.6.4
+    container_name: test-etcd
+    command:
+      [
+        "/usr/local/bin/etcd",
+        "--data-dir=/etcd-data",
+        "--name=node1",
+        "--initial-advertise-peer-urls=http://test-etcd:2380",
+        "--listen-peer-urls=http://0.0.0.0:2380",
+        "--advertise-client-urls=http://test-etcd:2379",
+        "--listen-client-urls=http://0.0.0.0:2379",
+        "--initial-cluster=node1=http://test-etcd:2380"
+      ]
+    restart: unless-stopped
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    volumes:
+      - ./etcd/data:/etcd-data
