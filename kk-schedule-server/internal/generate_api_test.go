@@ -13,11 +13,11 @@ func TestName(t *testing.T) {
 }
 
 func TestGeneratePermissionApi(t *testing.T) {
-	apiGroupModel := grpc_api_gen.ApiGroupModel{
-		AdditionImports: `
-	`,
-		TargetPath: "./api_handlers",
-	}
+	//apiGroupModel := grpc_api_gen.ApiGroupModel{
+	//	AdditionImports: `
+	//`,
+	//	TargetPath: "./api_handlers",
+	//}
 
 	//grpc_api_gen.GenerateHandler(apiGroupModel, grpc_api_gen.ApiModel{
 	//	ApiPtr: &kk_schedule.JobList{},
@@ -44,9 +44,9 @@ func TestGeneratePermissionApi(t *testing.T) {
 	//grpc_api_gen.GenerateHandler(apiGroupModel, grpc_api_gen.ApiModel{
 	//	ApiPtr: &kk_schedule.JobDelete{},
 	//})
-	grpc_api_gen.GenerateHandler(apiGroupModel, grpc_api_gen.ApiModel{
-		ApiPtr: &kk_schedule.JobTrigger{},
-	})
+	//grpc_api_gen.GenerateHandler(apiGroupModel, grpc_api_gen.ApiModel{
+	//	ApiPtr: &kk_schedule.JobTrigger{},
+	//})
 	//grpc_api_gen.GenerateHandler(apiGroupModel, grpc_api_gen.ApiModel{
 	//	ApiPtr: &kk_schedule.ServiceList{},
 	//})

@@ -20,9 +20,9 @@ func main() {
 	stage := kk_stage.NewStage(context.Background(), "kk-schedule").SetStartTime(kk_time.NowUTCTime())
 	{
 		configSlog = kk_stage.ConfigLog{
-			DebugMode:  g_config.Config.DebugMode,
 			StartTime:  stage.StartTime,
 			Lumberjack: kk_stage.DefaultLogConfig(kk_time.NowUTCTime(), "kk-schedule"),
+			Format:     kk_stage.FormatJSON,
 		}
 		configSlog.Init()
 		defer configSlog.Close()

@@ -39,6 +39,7 @@ nilaway:
 
 update-dep:
 	go get -u ./...
+	go get tool
 	go mod tidy
 
 cache-clean:
