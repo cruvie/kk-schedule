@@ -11,8 +11,8 @@ cd ..
 #cd kk-schedule-server && go mod vendor
 #)
 
-#docker pull --platform linux/amd64 golang:1.24.7
-#docker pull --platform linux/arm64 golang:1.24.7
+#docker pull --platform linux/amd64 golang:1.25.0
+#docker pull --platform linux/arm64 golang:1.25.0
 #docker pull --platform linux/amd64 alpine:latest
 #docker pull --platform linux/arm64 alpine:latest
 
