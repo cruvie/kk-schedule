@@ -2,7 +2,6 @@
 GrpcPort: 8666
 HttpPort: 8667
 WebPort: 8668
-DebugMode: false
 StoreEtcd:
   UserName: root
   Password: root

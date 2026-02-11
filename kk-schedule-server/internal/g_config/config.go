@@ -15,10 +15,9 @@ func init() {
 var Config config
 
 type config struct {
-	HttpPort  int  `yaml:"HttpPort"`
-	GrpcPort  int  `yaml:"GrpcPort"`
-	WebPort   int  `yaml:"WebPort"`
-	DebugMode bool `yaml:"DebugMode"`
+	HttpPort  int `yaml:"HttpPort"`
+	GrpcPort  int `yaml:"GrpcPort"`
+	WebPort   int `yaml:"WebPort"`
 	StoreEtcd struct {
 		UserName  string   `yaml:"UserName"`
 		Password  string   `yaml:"Password"`
