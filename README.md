@@ -12,22 +12,20 @@ A job scheduling system based on cron and grpc
 
 ```mermaid
 graph TB
-    U[kk-scheduler RPCClient]
-    W[kk-scheduler Web UI]
-
-    subgraph "User Cron Service"
-        A[kk-scheduler Client server]
-        A2[User Jobs]
-    end
+    U[SDK RPCClient]
+    W[Web UI]
 
     subgraph "kk-scheduler"
         C[API Handlers]
-    end
-
-    subgraph "Core"
         G[Global Client]
         F[Cron Scheduler]
-        H[Cron Trigger Functions]
+        C --"Update Job"--> F
+    end
+
+    subgraph "App"
+        A[kk-scheduler Client server]
+        A2[User Jobs]
+        A -- " Trigger " --> A2
     end
 
     subgraph "Storage Layer"
@@ -35,14 +33,12 @@ graph TB
         I[Default Etcd Store]
     end
 
-    U -- " Put/Enable Job;Put Service.... " --> C
-    W -- " Put/Enable Job;Put Service.... " --> C
+    U -- " Get/Put/Enable/Trigger Job/Service " --> C
+    W -- " Get/Put/Enable/Trigger Job/Service " --> C
     C --> G
-    G --> F
-    F -- " Execute Jobs " --> H
-    H -- " RPC Trigger " --> A
-    A -- " Trigger " --> A2
-    G <----> J
+    F --> G
+    G -- " RPC Trigger " --> A
+    G <-- " Get/Put " --> J
     J --> I
 ```
 
