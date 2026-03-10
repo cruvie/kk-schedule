@@ -2,6 +2,8 @@
 
 A job scheduling system based on cron and grpc
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/cruvie/kk-schedule)
+
 # Screenshot
 
 ![service-list](https://github.com/cruvie/kk-scheduler/blob/main/readme/service-list.png?raw=true)
@@ -15,31 +17,31 @@ graph TB
     U[SDK RPCClient]
     W[Web UI]
 
-    subgraph "kk-scheduler"
-        C[API Handlers]
-        G[Global Client]
-        F[Cron Scheduler]
-        C --"Update Job"--> F
+subgraph "kk-scheduler"
+C[API Handlers]
+G[Global Client]
+F[Cron Scheduler]
+C -- " Update Job " - - > F 
     end
 
-    subgraph "App"
-        A[kk-scheduler Client server]
-        A2[User Jobs]
-        A -- " Trigger " --> A2
-    end
+subgraph " App "
+A [kk - scheduler Client server ]
+A2 [ User Jobs ]
+A - - " Trigger " --> A2
+end
 
-    subgraph "Storage Layer"
-        J[Store Interface]
-        I[Default Etcd Store]
-    end
+subgraph "Storage Layer"
+J[Store Interface]
+I[Default Etcd Store]
+end
 
-    U -- " Get/Put/Enable/Trigger Job/Service " --> C
-    W -- " Get/Put/Enable/Trigger Job/Service " --> C
-    C --> G
-    F --> G
-    G -- " RPC Trigger " --> A
-    G <-- " Get/Put " --> J
-    J --> I
+U -- " Get/Put/Enable/Trigger Job/Service " --> C
+W -- " Get/Put/Enable/Trigger Job/Service " --> C
+C --> G
+F --> G
+G -- " RPC Trigger " --> A
+G <-- " Get/Put " --> J
+J --> I
 ```
 
 # Deploy
