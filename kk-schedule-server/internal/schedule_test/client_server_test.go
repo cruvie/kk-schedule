@@ -19,8 +19,8 @@ type server struct {
 }
 
 func (server) Trigger(ctx context.Context, input *kk_schedule.Trigger_Input) (*kk_schedule.Trigger_Output, error) {
-	slog.Info("Trigger received", "FuncName", input.FuncName)
-	switch input.FuncName {
+	slog.Info("Trigger received", "FuncName", input.GetFuncName())
+	switch input.GetFuncName() {
 	case "Func1":
 		go Func1()
 	default:
@@ -34,7 +34,7 @@ func Func1() {
 	defer slog.Info("Func1 end")
 }
 
-func authorityAuthInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func authorityAuthInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "missing metadata")

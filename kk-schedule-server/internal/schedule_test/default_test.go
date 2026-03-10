@@ -28,109 +28,115 @@ func down() {
 
 const testAuthToken = "sdgoisdglodshlghlshlghdlskg"
 
-var testJob = &kk_schedule.PBRegisterJob{
-	Description: "test job",
-	ServiceName: "test-service",
-	FuncName:    "test-func",
-}
+var testJob = func() *kk_schedule.PBRegisterJob {
+	j := &kk_schedule.PBRegisterJob{}
+	j.SetDescription("test job")
+	j.SetServiceName("test-service")
+	j.SetFuncName("test-func")
+	return j
+}()
 
-var testService = &kk_schedule.PBRegisterService{
-	ServiceName: "test-service",
-	Target:      "127.0.0.1:8000",
-	AuthToken:   testAuthToken,
-}
+var testService = func() *kk_schedule.PBRegisterService {
+	s := &kk_schedule.PBRegisterService{}
+	s.SetServiceName("test-service")
+	s.SetTarget("127.0.0.1:8000")
+	s.SetAuthToken(testAuthToken)
+	return s
+}()
 
 func TestJobList(t *testing.T) {
 	defer down()
-	jobs, err := getClient(t).JobList(t.Context(), &kk_schedule.JobList_Input{})
+	input := &kk_schedule.JobList_Input{}
+	jobs, err := getClient(t).JobList(t.Context(), input)
 	assert.NoError(t, err)
-	for _, job := range jobs.JobList {
+	for _, job := range jobs.GetJobList() {
 		t.Log(job)
-		t.Log(job.Prev.AsTime(), job.Next.AsTime())
+		t.Log(job.GetPrev().AsTime(), job.GetNext().AsTime())
 	}
 }
 
 func TestJobGet(t *testing.T) {
 	defer down()
-	job, err := getClient(t).JobGet(t.Context(), &kk_schedule.JobGet_Input{
-		ServiceName: testJob.ServiceName,
-		FuncName:    testJob.FuncName,
-	})
+	input := &kk_schedule.JobGet_Input{}
+	input.SetServiceName(testJob.GetServiceName())
+	input.SetFuncName(testJob.GetFuncName())
+	job, err := getClient(t).JobGet(t.Context(), input)
 	assert.NoError(t, err)
-	t.Log(job.Job)
-	t.Log(job.Job.Prev.AsTime(), job.Job.Next.AsTime())
+	t.Log(job.GetJob())
+	t.Log(job.GetJob().GetPrev().AsTime(), job.GetJob().GetNext().AsTime())
 }
 
 func TestJobSetSpec(t *testing.T) {
 	defer down()
-	resp, err := getClient(t).JobSetSpec(t.Context(), &kk_schedule.JobSetSpec_Input{
-		ServiceName: testJob.ServiceName,
-		FuncName:    testJob.FuncName,
-		Spec:        "* * * * *",
-	})
+	input := &kk_schedule.JobSetSpec_Input{}
+	input.SetServiceName(testJob.GetServiceName())
+	input.SetFuncName(testJob.GetFuncName())
+	input.SetSpec("* * * * *")
+	resp, err := getClient(t).JobSetSpec(t.Context(), input)
 	assert.NoError(t, err)
 	t.Log(resp)
 }
 
 func TestJobEnable(t *testing.T) {
 	defer down()
-	resp, err := getClient(t).JobEnable(t.Context(), &kk_schedule.JobEnable_Input{
-		ServiceName: testJob.ServiceName,
-		FuncName:    testJob.FuncName,
-	})
+	input := &kk_schedule.JobEnable_Input{}
+	input.SetServiceName(testJob.GetServiceName())
+	input.SetFuncName(testJob.GetFuncName())
+	resp, err := getClient(t).JobEnable(t.Context(), input)
 	assert.NoError(t, err)
 	t.Log(resp)
 }
 
 func TestJobDisable(t *testing.T) {
 	defer down()
-	resp, err := getClient(t).JobDisable(t.Context(), &kk_schedule.JobDisable_Input{
-		ServiceName: testJob.ServiceName,
-		FuncName:    testJob.FuncName,
-	})
+	input := &kk_schedule.JobDisable_Input{}
+	input.SetServiceName(testJob.GetServiceName())
+	input.SetFuncName(testJob.GetFuncName())
+	resp, err := getClient(t).JobDisable(t.Context(), input)
 	assert.NoError(t, err)
 	t.Log(resp)
 }
 
 func TestJobPut(t *testing.T) {
 	defer down()
-	resp, err := getClient(t).JobPut(t.Context(), &kk_schedule.JobPut_Input{
-		Job: testJob,
-	})
+	input := &kk_schedule.JobPut_Input{}
+	input.SetJob(testJob)
+	resp, err := getClient(t).JobPut(t.Context(), input)
 	assert.NoError(t, err)
 	t.Log(resp)
 }
 
 func TestServiceList(t *testing.T) {
 	defer down()
-	resp, err := getClient(t).ServiceList(t.Context(), &kk_schedule.ServiceList_Input{})
+	input := &kk_schedule.ServiceList_Input{}
+	resp, err := getClient(t).ServiceList(t.Context(), input)
 	assert.NoError(t, err)
 	t.Log(resp)
 }
 
 func TestServicePut(t *testing.T) {
 	defer down()
-	resp, err := getClient(t).ServicePut(t.Context(), &kk_schedule.ServicePut_Input{
-		Service: testService,
-	})
+	input := &kk_schedule.ServicePut_Input{}
+	input.SetService(testService)
+	resp, err := getClient(t).ServicePut(t.Context(), input)
 	assert.NoError(t, err)
 	t.Log(resp)
 }
 
 func TestServiceGet(t *testing.T) {
 	defer down()
-	resp, err := getClient(t).ServiceGet(t.Context(), &kk_schedule.ServiceGet_Input{
-		ServiceName: testService.ServiceName,
-	})
+	input := &kk_schedule.ServiceGet_Input{}
+	input.SetServiceName(testService.GetServiceName())
+	resp, err := getClient(t).ServiceGet(t.Context(), input)
 	assert.NoError(t, err)
 	t.Log(resp)
 }
 
 func TestServiceDelete(t *testing.T) {
 	defer down()
-	resp, err := getClient(t).ServiceDelete(t.Context(), &kk_schedule.ServiceDelete_Input{
-		ServiceName: testService.ServiceName,
-	})
+	input := &kk_schedule.ServiceDelete_Input{}
+	input.SetServiceName(testService.GetServiceName())
+	resp, err := getClient(t).ServiceDelete(t.Context(), input)
 	assert.NoError(t, err)
 	t.Log(resp)
 }

@@ -21,47 +21,51 @@ func TestForREADME(t *testing.T) {
 	client := kk_schedule.NewKKScheduleClient(conn)
 
 	myServiceName := "my-service"
-	testJob := &kk_schedule.PBRegisterJob{
-		Description: "test job",
-		ServiceName: myServiceName,
-		FuncName:    "Func1",
-	}
-	testService := &kk_schedule.PBRegisterService{
-		ServiceName: myServiceName,
-		Target:      "127.0.0.1:8000",
-	}
+	testJob := func() *kk_schedule.PBRegisterJob {
+		j := &kk_schedule.PBRegisterJob{}
+		j.SetDescription("test job")
+		j.SetServiceName(myServiceName)
+		j.SetFuncName("Func1")
+		return j
+	}()
+	testService := func() *kk_schedule.PBRegisterService {
+		s := &kk_schedule.PBRegisterService{}
+		s.SetServiceName(myServiceName)
+		s.SetTarget("127.0.0.1:8000")
+		return s
+	}()
 	{
 		// put the running service info to kk-schedule
-		resp, err := client.ServicePut(t.Context(), &kk_schedule.ServicePut_Input{
-			Service: testService,
-		})
+		input := &kk_schedule.ServicePut_Input{}
+		input.SetService(testService)
+		resp, err := client.ServicePut(t.Context(), input)
 		assert.NoError(t, err)
 		t.Log(resp)
 	}
 	{
 		// put a job to kk-schedule with the service name
-		resp, err := client.JobPut(t.Context(), &kk_schedule.JobPut_Input{
-			Job: testJob,
-		})
+		input := &kk_schedule.JobPut_Input{}
+		input.SetJob(testJob)
+		resp, err := client.JobPut(t.Context(), input)
 		assert.NoError(t, err)
 		t.Log(resp)
 	}
 	{
 		// set job spec
-		resp, err := client.JobSetSpec(t.Context(), &kk_schedule.JobSetSpec_Input{
-			ServiceName: testJob.ServiceName,
-			FuncName:    testJob.FuncName,
-			Spec:        "* * * * *",
-		})
+		input := &kk_schedule.JobSetSpec_Input{}
+		input.SetServiceName(testJob.GetServiceName())
+		input.SetFuncName(testJob.GetFuncName())
+		input.SetSpec("* * * * *")
+		resp, err := client.JobSetSpec(t.Context(), input)
 		assert.NoError(t, err)
 		t.Log(resp)
 	}
 	{
 		// enable job to be triggered with the spec
-		resp, err := client.JobEnable(t.Context(), &kk_schedule.JobEnable_Input{
-			ServiceName: testJob.ServiceName,
-			FuncName:    testJob.FuncName,
-		})
+		input := &kk_schedule.JobEnable_Input{}
+		input.SetServiceName(testJob.GetServiceName())
+		input.SetFuncName(testJob.GetFuncName())
+		resp, err := client.JobEnable(t.Context(), input)
 		assert.NoError(t, err)
 		t.Log(resp)
 	}
