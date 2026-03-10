@@ -13,11 +13,11 @@ import (
 
 func triggerClient(service *kk_schedule.PBRegisterService) (conn *grpc.ClientConn, client kk_schedule.KKScheduleTriggerClient, err error) {
 	var opts []grpc.DialOption
-	if service.AuthToken != "" {
-		opts = append(opts, grpc.WithAuthority(service.AuthToken))
+	if service.GetAuthToken() != "" {
+		opts = append(opts, grpc.WithAuthority(service.GetAuthToken()))
 	}
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	conn, err = grpc.NewClient(service.Target, opts...)
+	conn, err = grpc.NewClient(service.GetTarget(), opts...)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -40,9 +40,10 @@ func triggerFunc(service *kk_schedule.PBRegisterService, funcName string) func()
 		stage := kk_stage.NewStage(context.Background(), "kk-schedule")
 		ctx, cancelFunc := kk_grpc.NewCallGrpcCtx(stage)
 		defer cancelFunc()
-		_, err = client.Trigger(ctx, &kk_schedule.Trigger_Input{
-			FuncName: funcName,
-		})
+
+		input := &kk_schedule.Trigger_Input{}
+		input.SetFuncName(funcName)
+		_, err = client.Trigger(ctx, input)
 		if err != nil {
 			slog.Error(err.Error())
 		}

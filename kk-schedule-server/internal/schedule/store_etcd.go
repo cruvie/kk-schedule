@@ -37,7 +37,7 @@ func NewStoreEtcd() *StoreEtcd {
 }
 
 func (x *StoreEtcd) getJobKey(entry *kk_schedule.PBJob) string {
-	return fmt.Sprintf("%s/%s/%s", storeJobKey, entry.ServiceName, entry.FuncName)
+	return fmt.Sprintf("%s/%s/%s", storeJobKey, entry.GetServiceName(), entry.GetFuncName())
 }
 
 func (x *StoreEtcd) JobList(serviceName string) ([]*kk_schedule.PBJob, error) {
@@ -95,7 +95,7 @@ func (x *StoreEtcd) JobDelete(serviceName, funcName string) error {
 }
 
 func (x *StoreEtcd) ServicePut(v *kk_schedule.PBRegisterService) error {
-	key := fmt.Sprintf("%s/%s", storeServiceKey, v.ServiceName)
+	key := fmt.Sprintf("%s/%s", storeServiceKey, v.GetServiceName())
 	value, err := json.Marshal(v)
 	if err != nil {
 		return err

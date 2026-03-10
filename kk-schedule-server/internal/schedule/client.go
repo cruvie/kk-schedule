@@ -34,10 +34,10 @@ func (x *Client) initJob() {
 		panic(err)
 	}
 	for _, job := range jobList {
-		if !job.Enabled {
+		if !job.GetEnabled() {
 			continue
 		}
-		err := x.JobEnable(job.ServiceName, job.FuncName)
+		err := x.JobEnable(job.GetServiceName(), job.GetFuncName())
 		if err != nil {
 			panic(err)
 		}
@@ -59,33 +59,33 @@ func (x *Client) JobPut(jobs ...*kk_schedule.PBRegisterJob) error {
 			panic(err)
 		}
 		{ // check service exist
-			_, err = x.storer.ServiceGet(job.ServiceName)
+			_, err = x.storer.ServiceGet(job.GetServiceName())
 			if err != nil {
 				return err
 			}
 		}
-		newEntry := &kk_schedule.PBJob{
-			EntryID:     0,
-			Enabled:     false,
-			Next:        nil,
-			Prev:        nil,
-			Spec:        "",
-			ServiceName: job.ServiceName,
-			Description: job.Description,
-			FuncName:    job.FuncName,
-		}
 
-		entry, err := x.storer.JobGet(job.ServiceName, job.FuncName)
+		newEntry := &kk_schedule.PBJob{}
+		newEntry.SetEntryID(0)
+		newEntry.SetEnabled(false)
+		newEntry.SetNext(nil)
+		newEntry.SetPrev(nil)
+		newEntry.SetSpec("")
+		newEntry.SetServiceName(job.GetServiceName())
+		newEntry.SetDescription(job.GetDescription())
+		newEntry.SetFuncName(job.GetFuncName())
+
+		entry, err := x.storer.JobGet(job.GetServiceName(), job.GetFuncName())
 		if err != nil && !errors.Is(err, kk_schedule.ErrJobNotFount) {
 			return err
 		}
 
 		if entry != nil {
-			newEntry.EntryID = entry.EntryID
-			newEntry.Enabled = entry.Enabled
-			newEntry.Next = entry.Next
-			newEntry.Prev = entry.Prev
-			newEntry.Spec = entry.Spec
+			newEntry.SetEntryID(entry.GetEntryID())
+			newEntry.SetEnabled(entry.GetEnabled())
+			newEntry.SetNext(entry.GetNext())
+			newEntry.SetPrev(entry.GetPrev())
+			newEntry.SetSpec(entry.GetSpec())
 		}
 		err = x.storer.JobPut(newEntry)
 		if err != nil {
@@ -105,35 +105,35 @@ func (x *Client) JobList(serviceName string) ([]*kk_schedule.PBJob, error) {
 	var pbJobs []*kk_schedule.PBJob
 	for _, entry := range entries {
 		find, b := lo.Find(entryList, func(item *kk_schedule.PBJob) bool {
-			return item.EntryID == int32(entry.ID)
+			return item.GetEntryID() == int32(entry.ID)
 		})
 		if !b {
 			continue
 		} else {
-			hasSpecEntryList = append(hasSpecEntryList, find.EntryID)
+			hasSpecEntryList = append(hasSpecEntryList, find.GetEntryID())
 		}
-		pbJobs = append(pbJobs, &kk_schedule.PBJob{
-			EntryID:     int32(entry.ID),
-			Enabled:     find.Enabled,
-			Next:        timestamppb.New(entry.Next),
-			Prev:        timestamppb.New(entry.Prev),
-			Spec:        find.Spec,
-			Description: find.Description,
-			FuncName:    find.FuncName,
-			ServiceName: find.ServiceName,
-		})
+		job := &kk_schedule.PBJob{}
+		job.SetEntryID(find.GetEntryID())
+		job.SetEnabled(find.GetEnabled())
+		job.SetNext(find.GetNext())
+		job.SetPrev(find.GetPrev())
+		job.SetSpec(find.GetSpec())
+		job.SetDescription(find.GetDescription())
+		job.SetFuncName(find.GetFuncName())
+		job.SetServiceName(find.GetServiceName())
+		pbJobs = append(pbJobs, job)
 	}
 
 	noSpecJobList := lo.Filter(entryList, func(item *kk_schedule.PBJob, index int) bool {
 		_, b := lo.Find(hasSpecEntryList, func(id int32) bool {
-			return id == item.EntryID
+			return id == item.GetEntryID()
 		})
 		return !b
 	})
 	pbJobs = append(pbJobs, noSpecJobList...)
 	// sort by serviceName
 	slices.SortFunc(pbJobs, func(a, b *kk_schedule.PBJob) int {
-		return strings.Compare(a.ServiceName, b.ServiceName)
+		return strings.Compare(a.GetServiceName(), b.GetServiceName())
 	})
 	return pbJobs, nil
 }
@@ -143,11 +143,11 @@ func (x *Client) JobGet(serviceName, funcName string) (*kk_schedule.PBJob, error
 	if err != nil {
 		return nil, err
 	}
-	cEntry := x.cron.Entry(cron.EntryID(entry.EntryID))
+	cEntry := x.cron.Entry(cron.EntryID(entry.GetEntryID()))
 
 	if cEntry.Valid() {
-		entry.Next = timestamppb.New(cEntry.Next)
-		entry.Prev = timestamppb.New(cEntry.Prev)
+		entry.SetNext(timestamppb.New(cEntry.Next))
+		entry.SetPrev(timestamppb.New(cEntry.Prev))
 	}
 
 	return entry, nil
@@ -158,13 +158,13 @@ func (x *Client) JobSetSpec(serviceName, funcName string, spec string) error {
 	if err != nil {
 		return err
 	}
-	if job.Spec == spec {
+	if job.GetSpec() == spec {
 		return nil
 	}
-	job.Spec = spec
+	job.SetSpec(spec)
 
 	err = x.storer.JobPut(job)
-	if job.Enabled {
+	if job.GetEnabled() {
 		err = x.JobEnable(serviceName, funcName)
 		if err != nil {
 			return err
@@ -179,7 +179,7 @@ func (x *Client) JobEnable(serviceName string, funcName string) error {
 	if err != nil {
 		return err
 	}
-	if entry.Spec == "" {
+	if entry.GetSpec() == "" {
 		return kk_schedule.ErrSpecIsEmpty
 	}
 	err = x.JobDisable(serviceName, funcName)
@@ -191,13 +191,13 @@ func (x *Client) JobEnable(serviceName string, funcName string) error {
 		return err
 	}
 
-	entryID, err := x.cron.AddFunc(entry.Spec, triggerFunc(service, funcName))
+	entryID, err := x.cron.AddFunc(entry.GetSpec(), triggerFunc(service, funcName))
 	if err != nil {
 		return err
 	}
 
-	entry.EntryID = int32(entryID)
-	entry.Enabled = true
+	entry.SetEntryID(int32(entryID))
+	entry.SetEnabled(true)
 
 	err = x.storer.JobPut(entry)
 	return err
@@ -208,10 +208,10 @@ func (x *Client) JobDisable(serviceName, funcName string) error {
 	if err != nil {
 		return err
 	}
-	x.cron.Remove(cron.EntryID(entry.EntryID))
+	x.cron.Remove(cron.EntryID(entry.GetEntryID()))
 
-	entry.Enabled = false
-	entry.EntryID = 0
+	entry.SetEnabled(false)
+	entry.SetEntryID(0)
 
 	err = x.storer.JobPut(entry)
 	return err
