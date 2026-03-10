@@ -4,19 +4,8 @@ import (
 	"context"
 
 	"gitee.com/cruvie/kk_go_kit/kk_grpc"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobDelete"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobTrigger"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/serviceList"
-
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobDisable"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobEnable"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobGet"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobList"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobPut"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/jobSetSpec"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/serviceDelete"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/serviceGet"
-	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/servicePut"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/job"
+	"github.com/cruvie/kk-schedule/kk-schedule-server/internal/api_handlers/service"
 	"github.com/cruvie/kk-schedule/kk-schedule-server/kk_schedule"
 )
 
@@ -24,7 +13,7 @@ func (x *server) JobList(ctx context.Context, input *kk_schedule.JobList_Input) 
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		jobList.NewApi,
+		job.NewApiJobList,
 	)
 }
 
@@ -32,7 +21,7 @@ func (x *server) JobGet(ctx context.Context, input *kk_schedule.JobGet_Input) (*
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		jobGet.NewApi,
+		job.NewApiJobGet,
 	)
 }
 
@@ -40,7 +29,7 @@ func (x *server) JobSetSpec(ctx context.Context, input *kk_schedule.JobSetSpec_I
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		jobSetSpec.NewApi,
+		job.NewApiJobSetSpec,
 	)
 }
 
@@ -48,7 +37,7 @@ func (x *server) JobEnable(ctx context.Context, input *kk_schedule.JobEnable_Inp
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		jobEnable.NewApi,
+		job.NewApiJobEnable,
 	)
 }
 
@@ -56,7 +45,7 @@ func (x *server) JobDisable(ctx context.Context, input *kk_schedule.JobDisable_I
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		jobDisable.NewApi,
+		job.NewApiJobDisable,
 	)
 }
 
@@ -64,7 +53,7 @@ func (x *server) JobPut(ctx context.Context, input *kk_schedule.JobPut_Input) (*
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		jobPut.NewApi,
+		job.NewApiJobPut,
 	)
 }
 
@@ -72,7 +61,7 @@ func (x *server) JobDelete(ctx context.Context, input *kk_schedule.JobDelete_Inp
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		jobDelete.NewApi,
+		job.NewApiJobDelete,
 	)
 }
 
@@ -80,7 +69,7 @@ func (x *server) JobTrigger(ctx context.Context, input *kk_schedule.JobTrigger_I
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		jobTrigger.NewApi,
+		job.NewApiJobTrigger,
 	)
 }
 
@@ -88,7 +77,7 @@ func (x *server) ServiceList(ctx context.Context, input *kk_schedule.ServiceList
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		serviceList.NewApi,
+		service.NewApiServiceList,
 	)
 }
 
@@ -96,7 +85,7 @@ func (x *server) ServicePut(ctx context.Context, input *kk_schedule.ServicePut_I
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		servicePut.NewApi,
+		service.NewApiServicePut,
 	)
 }
 
@@ -104,7 +93,7 @@ func (x *server) ServiceGet(ctx context.Context, input *kk_schedule.ServiceGet_I
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		serviceGet.NewApi,
+		service.NewApiServiceGet,
 	)
 }
 
@@ -112,6 +101,6 @@ func (x *server) ServiceDelete(ctx context.Context, input *kk_schedule.ServiceDe
 	return kk_grpc.GrpcHandler(
 		ctx,
 		input,
-		serviceDelete.NewApi,
+		service.NewApiServiceDelete,
 	)
 }

@@ -12,6 +12,9 @@ plugins:
     out: .
     opt:
       - paths=source_relative
+      #      - default_api_level=API_OPEN
+      - default_api_level=API_HYBRID
+#      - default_api_level=API_OPAQUE #等go dart 支持edition 2024
   - remote: buf.build/grpc/go
     out: .
     opt:
